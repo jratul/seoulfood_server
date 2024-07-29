@@ -2,14 +2,42 @@ import express, { Express } from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
+import passport from "passport";
+import cookieSession from "cookie-session";
 import "dotenv/config";
+import "config/passport";
 import foodsRouter from "./routes/foods.router";
+import usersRouter from "./routes/users.router";
 
 const app: Express = express();
 
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use(
+  cookieSession({
+    name: process.env.COOKIE_SESSION_NAME,
+    keys: [process.env.COOKIE_ENCRYPTION_KEY ?? ""],
+  })
+);
+
+app.use((req, _res, next) => {
+  if (req.session && !req.session.regenerate) {
+    req.session.regenerate = (cb: any) => {
+      cb();
+    };
+  }
+  if (req.session && !req.session.save) {
+    req.session.save = (cb: any) => {
+      cb();
+    };
+  }
+  next();
+});
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 if (process.env.MONGODB_URI && process.env.DB_NAME) {
   mongoose
@@ -23,6 +51,7 @@ if (process.env.MONGODB_URI && process.env.DB_NAME) {
 }
 
 app.use("/foods", foodsRouter);
+app.use("/users", usersRouter);
 
 app.get("/", (req, res) => {
   res.status(200).send("Seoul Food Server");

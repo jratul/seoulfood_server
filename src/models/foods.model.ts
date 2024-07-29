@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { ObjectId } from "mongoose";
 
 const foodSchema = new mongoose.Schema({
   imgId: {
@@ -24,6 +24,13 @@ const foodSchema = new mongoose.Schema({
   imageUrl: {
     type: String,
     required: true,
+  },
+  likes: {
+    type: Map,
+    of: {
+      type: mongoose.Schema.Types.ObjectId,
+    },
+    default: {},
   },
 });
 
