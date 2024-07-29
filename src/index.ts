@@ -4,8 +4,8 @@ import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import passport from "passport";
 import cookieSession from "cookie-session";
+import morgan from "morgan";
 import "dotenv/config";
-import "config/passport";
 import foodsRouter from "./routes/foods.router";
 import usersRouter from "./routes/users.router";
 
@@ -21,6 +21,12 @@ app.use(
     keys: [process.env.COOKIE_ENCRYPTION_KEY ?? ""],
   })
 );
+
+if (process.env.NODE_ENV === "production") {
+  app.use(morgan("combined"));
+} else {
+  app.use(morgan("dev"));
+}
 
 app.use((req, _res, next) => {
   if (req.session && !req.session.regenerate) {
@@ -38,6 +44,7 @@ app.use((req, _res, next) => {
 
 app.use(passport.initialize());
 app.use(passport.session());
+import "config/passport";
 
 if (process.env.MONGODB_URI && process.env.DB_NAME) {
   mongoose
