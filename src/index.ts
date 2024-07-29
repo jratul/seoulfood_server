@@ -25,7 +25,7 @@ if (process.env.MONGODB_URI && process.env.DB_NAME) {
 app.use("/foods", foodsRouter);
 
 app.get("/", (req, res) => {
-  res.send("Seoul Food Server");
+  res.status(200).send("Seoul Food Server");
 });
 
 app.listen(process.env.PORT, () => {
