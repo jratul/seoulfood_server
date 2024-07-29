@@ -66,8 +66,12 @@ app.get("/", (req, res) => {
   res.status(200).send("Seoul Food Server");
 });
 
-const server = https.createServer({}, app);
+// const server = https.createServer({}, app);
 
-server.listen(process.env.PORT, () => {
+// server.listen(process.env.PORT, () => {
+//   console.log(`Seoul Food Server is running on ${process.env.PORT}`);
+// });
+
+app.listen(process.env.PORT, () => {
   console.log(`Seoul Food Server is running on ${process.env.PORT}`);
 });
