@@ -5,10 +5,11 @@ import mongoose from "mongoose";
 import passport from "passport";
 import cookieSession from "cookie-session";
 import morgan from "morgan";
+import path from "path";
 import "dotenv/config";
 import foodsRouter from "./routes/foods.router";
 import usersRouter from "./routes/users.router";
-import googleStrategyConfig from "./config/passport";
+import "./config/passport";
 
 const app: Express = express();
 
@@ -18,6 +19,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(
   cookieSession({
+    maxAge: 24 * 60 * 60 * 1000,
     name: process.env.COOKIE_SESSION_NAME,
     keys: [process.env.COOKIE_ENCRYPTION_KEY ?? ""],
   })
@@ -45,11 +47,6 @@ app.use((req, _res, next) => {
 
 app.use(passport.initialize());
 app.use(passport.session());
-passport.use("google", googleStrategyConfig);
-
-passport.serializeUser((user, done) => {
-  done(null, user);
-});
 
 if (process.env.MONGODB_URI && process.env.DB_NAME) {
   mongoose
@@ -62,18 +59,14 @@ if (process.env.MONGODB_URI && process.env.DB_NAME) {
   console.log("Failed to connect mongo db. Invalid URI");
 }
 
+app.use(express.static(path.join(__dirname, "public")));
+
 app.use("/foods", foodsRouter);
 app.use("/users", usersRouter);
 
 app.get("/", (req, res) => {
   res.status(200).send("Seoul Food Server");
 });
-
-// const server = https.createServer({}, app);
-
-// server.listen(process.env.PORT, () => {
-//   console.log(`Seoul Food Server is running on ${process.env.PORT}`);
-// });
 
 app.listen(process.env.PORT, () => {
   console.log(`Seoul Food Server is running on ${process.env.PORT}`);

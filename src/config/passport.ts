@@ -1,5 +1,15 @@
-import User from "../models/users.model";
+import passport from "passport";
+import usersModel from "../models/users.model";
 import GoogleStrategy from "passport-google-oauth20";
+
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+passport.deserializeUser(async (id, done) => {
+  const user = await usersModel.findById(id);
+  done(null, user);
+});
 
 const googleStrategyConfig = new GoogleStrategy.Strategy(
   {
@@ -9,14 +19,16 @@ const googleStrategyConfig = new GoogleStrategy.Strategy(
     scope: ["email", "profile"],
   },
   (_accessToken, _refreshToken, profile, done) => {
-    User.findOne({ googleId: profile.id })
+    usersModel
+      .findOne({ googleId: profile.id })
       .then((existingUser) => {
         if (existingUser) {
           return done(null, existingUser);
         } else {
-          const user = new User();
-          user.email = profile.emails?.[0]?.value;
+          const user = new usersModel();
+          user.email = profile.emails?.[0]?.value ?? "";
           user.googleId = profile.id;
+          user.username = profile.displayName;
 
           user
             .save()
