@@ -1,4 +1,5 @@
 import express, { Express } from "express";
+import https from "https";
 import cors from "cors";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
@@ -65,6 +66,8 @@ app.get("/", (req, res) => {
   res.status(200).send("Seoul Food Server");
 });
 
-app.listen(process.env.PORT, () => {
+const server = https.createServer({}, app);
+
+server.listen(process.env.PORT, () => {
   console.log(`Seoul Food Server is running on ${process.env.PORT}`);
 });
