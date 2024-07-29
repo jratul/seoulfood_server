@@ -11,7 +11,7 @@ usersRouter.get(
   "/google/callback",
   passport.authenticate("google", {
     successReturnToOrRedirect: "https://localhost:3001",
-    failureRedirect: "/",
+    failureRedirect: "https://localhost:3001",
   })
 );
 
