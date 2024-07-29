@@ -8,6 +8,7 @@ import morgan from "morgan";
 import "dotenv/config";
 import foodsRouter from "./routes/foods.router";
 import usersRouter from "./routes/users.router";
+import googleStrategyConfig from "./config/passport";
 
 const app: Express = express();
 
@@ -44,7 +45,7 @@ app.use((req, _res, next) => {
 
 app.use(passport.initialize());
 app.use(passport.session());
-import "config/passport";
+passport.use("google", googleStrategyConfig);
 
 if (process.env.MONGODB_URI && process.env.DB_NAME) {
   mongoose

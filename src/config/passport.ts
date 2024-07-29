@@ -1,4 +1,3 @@
-import passport from "passport";
 import User from "../models/users.model";
 import GoogleStrategy from "passport-google-oauth20";
 
@@ -36,4 +35,4 @@ const googleStrategyConfig = new GoogleStrategy.Strategy(
   }
 );
 
-passport.use("google", googleStrategyConfig);
+export default googleStrategyConfig;
