@@ -19,12 +19,12 @@ usersRouter.get(
       expiresIn: "1h",
     });
 
-    res
-      .cookie("sfGoogleJwt", token, {
-        httpOnly: true,
-        maxAge: 24 * 60 * 60 * 1000,
-      })
-      .redirect("https://localhost:3001");
+    res.cookie("sfGoogleJwt", token, {
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+
+    res.redirect("https://localhost:3001");
   }
 );
 
