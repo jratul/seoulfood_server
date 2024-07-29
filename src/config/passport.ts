@@ -5,7 +5,7 @@ const googleStrategyConfig = new GoogleStrategy.Strategy(
   {
     clientID: process.env.GOOGLE_CLIENT_ID || "",
     clientSecret: process.env.GOOGLE_CLIENT_PW || "",
-    callbackURL: "/users/google/callback",
+    callbackURL: "https://sfserver.jratul.shop:9876/users/google/callback",
     scope: ["email", "profile"],
   },
   (_accessToken, _refreshToken, profile, done) => {
