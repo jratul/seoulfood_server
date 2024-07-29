@@ -1,6 +1,7 @@
 import express, { Express } from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
+import cookieParser from "cookie-parser";
 import mongoose from "mongoose";
 import passport from "passport";
 import morgan from "morgan";
@@ -16,6 +17,7 @@ const app: Express = express();
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
 
 // app.use(
 //   cookieSession({
