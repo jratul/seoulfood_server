@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "concurrently \"tsc -w\" \"nodemon dist/index\""
+    "start": "concurrently \"npx tsc -w\" \"nodemon dist/index\""
   },
   "keywords": [],
   "author": "",
