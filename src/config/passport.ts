@@ -5,7 +5,7 @@ const googleStrategyConfig = new GoogleStrategy.Strategy(
   {
     clientID: process.env.GOOGLE_CLIENT_ID || "",
     clientSecret: process.env.GOOGLE_CLIENT_PW || "",
-    callbackURL: "/",
+    callbackURL: "https://localhost:3001",
     scope: ["email", "profile"],
   },
   (_accessToken, _refreshToken, profile, done) => {
