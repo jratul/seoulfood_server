@@ -1,5 +1,4 @@
 import express, { Express } from "express";
-import https from "https";
 import cors from "cors";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
@@ -45,7 +44,7 @@ app.use((req, _res, next) => {
 });
 
 app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.session());
 passport.use("google", googleStrategyConfig);
 
 if (process.env.MONGODB_URI && process.env.DB_NAME) {
