@@ -47,4 +47,4 @@ const googleStrategyConfig = new GoogleStrategy.Strategy(
   }
 );
 
-export default googleStrategyConfig;
+passport.use(googleStrategyConfig);
