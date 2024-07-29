@@ -18,7 +18,10 @@ const googleStrategyConfig = new GoogleStrategy.Strategy(
     callbackURL: "https://sfserver.jratul.shop:9876/users/google/callback",
     scope: ["email", "profile"],
   },
-  (_accessToken, _refreshToken, profile, done) => {
+  (accessToken, refreshToken, profile, done) => {
+    console.log("accessToken : ", accessToken);
+    console.log("refreshToken : ", refreshToken);
+    console.log("profile : ", profile);
     usersModel
       .findOne({ googleId: profile.id })
       .then((existingUser) => {
@@ -26,9 +29,13 @@ const googleStrategyConfig = new GoogleStrategy.Strategy(
           return done(null, existingUser);
         } else {
           const user = new usersModel();
-          user.email = profile.emails?.[0]?.value ?? "";
+          user.email = profile.emails?.[0]?.value || "";
           user.googleId = profile.id;
-          user.username = profile.displayName;
+          user.username = profile._json?.name || "";
+
+          if (!user.email || !user.googleId || !user.username) {
+            done(new Error("Invalid user info"));
+          }
 
           user
             .save()
