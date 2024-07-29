@@ -1,8 +1,10 @@
 import express from "express";
 import passport from "passport";
-import { getUser } from "../controllers/users.controller";
+import { getUser, getUsers } from "../controllers/users.controller";
 
 const usersRouter = express.Router();
+
+usersRouter.get("/", getUsers);
 
 usersRouter.get("/google", passport.authenticate("google"));
 usersRouter.get(
