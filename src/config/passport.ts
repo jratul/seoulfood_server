@@ -7,8 +7,12 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser(async (id, done) => {
-  const user = await usersModel.findById(id);
-  done(null, user);
+  try {
+    const user = await usersModel.findById(id);
+    done(null, user);
+  } catch (err) {
+    done(err);
+  }
 });
 
 const googleStrategyConfig = new GoogleStrategy.Strategy(
@@ -19,9 +23,6 @@ const googleStrategyConfig = new GoogleStrategy.Strategy(
     scope: ["email", "profile"],
   },
   (accessToken, refreshToken, profile, done) => {
-    console.log("accessToken : ", accessToken);
-    console.log("refreshToken : ", refreshToken);
-    console.log("profile : ", profile);
     usersModel
       .findOne({ googleId: profile.id })
       .then((existingUser) => {
@@ -31,7 +32,7 @@ const googleStrategyConfig = new GoogleStrategy.Strategy(
           const user = new usersModel();
           user.email = profile.emails?.[0]?.value || "";
           user.googleId = profile.id;
-          user.username = profile._json?.name || "";
+          user.username = profile.displayName;
 
           if (!user.email || !user.googleId || !user.username) {
             done(new Error("Invalid user info"));

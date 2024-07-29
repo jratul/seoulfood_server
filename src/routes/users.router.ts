@@ -12,13 +12,19 @@ usersRouter.get(
   "/google/callback",
   passport.authenticate("google", {
     failureRedirect: "https://localhost:3001",
+    failureMessage: true,
   }),
   (req, res) => {
     const token = jwt.sign({ user: req.user }, process.env.JWT_SECRET || "", {
       expiresIn: "1h",
     });
 
-    res.cookie("sfGoogleJwt", token).redirect("https://localhost:3001");
+    res
+      .cookie("sfGoogleJwt", token, {
+        httpOnly: true,
+        maxAge: 24 * 60 * 60 * 1000,
+      })
+      .redirect("https://localhost:3001");
   }
 );
 
