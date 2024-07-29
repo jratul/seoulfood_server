@@ -29,23 +29,27 @@ if (process.env.NODE_ENV === "production") {
   app.use(morgan("dev"));
 }
 
-app.use((req, _res, next) => {
-  if (req.session && !req.session.regenerate) {
-    req.session.regenerate = (cb: any) => {
-      cb();
-    };
-  }
-  if (req.session && !req.session.save) {
-    req.session.save = (cb: any) => {
-      cb();
-    };
-  }
-  next();
-});
+// app.use((req, _res, next) => {
+//   if (req.session && !req.session.regenerate) {
+//     req.session.regenerate = (cb: any) => {
+//       cb();
+//     };
+//   }
+//   if (req.session && !req.session.save) {
+//     req.session.save = (cb: any) => {
+//       cb();
+//     };
+//   }
+//   next();
+// });
 
 app.use(passport.initialize());
-// app.use(passport.session());
+app.use(passport.session());
 passport.use("google", googleStrategyConfig);
+
+passport.serializeUser((user, done) => {
+  done(null, user);
+});
 
 if (process.env.MONGODB_URI && process.env.DB_NAME) {
   mongoose
