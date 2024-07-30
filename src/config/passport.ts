@@ -19,8 +19,8 @@ const googleStrategyConfig = new GoogleStrategy.Strategy(
   {
     clientID: process.env.GOOGLE_CLIENT_ID || "",
     clientSecret: process.env.GOOGLE_CLIENT_PW || "",
-    // callbackURL: "https://sfserver.jratul.shop:9876/users/google/callback",
-    callbackURL: "https://localhost:3001",
+    callbackURL: "https://sfserver.jratul.shop:9876/users/google/callback",
+    // callbackURL: "https://localhost:3001",
     scope: ["email", "profile"],
   },
   (accessToken, refreshToken, profile, done) => {
