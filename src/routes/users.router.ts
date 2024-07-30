@@ -22,6 +22,8 @@ usersRouter.get(
     console.log("req:", req);
     console.log("req.user : ", req.user);
 
+    res.appendHeader("Access-Control-Allow-Credentials", "true");
+
     res.cookie("sfGoogleJwt", token, {
       httpOnly: true,
       maxAge: 24 * 60 * 60 * 1000,
